@@ -1,6 +1,8 @@
-.mapclass {
-  width: 400px;
-  height: 400px;
+.map-container {
+  width: 600px;
+  height: 600px;
+  display: block;
+  background-color: #fff;
 }
 
 .grid {
@@ -11,17 +13,4 @@
   grid-template-rows: 800px;
   background-color: #fff;
   grid-gap: 1em;
-}
-
-.sidebar {
-  margin: 0;
-  padding: 1rem;
-}
-
-
-@media screen and (max-width: 700px){
-  .grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
 }
