@@ -1,12 +1,47 @@
 import React from "react";
 import dateFns from "date-fns";
 import '../../App.css'
-
+import { Var } from "glamorous";
+const url="https://raw.githubusercontent.com/paredesrichard/commandline/master/events.json";
 class Calendar extends React.Component {
-    state = {
-        currentMonth: new Date(),
-        selectedDate: new Date()
-    };
+
+    constructor(props){
+        super(props);
+        this.state = {
+            currentMonth: new Date(),
+            selectedDate: new Date(),
+            events:[],
+        }
+    }
+    
+    
+    renderEvents=()=>{
+        var events=[];
+        fetch(url)
+      .then(response => {
+        let myEvents=response.json();
+        console.log(myEvents);
+         return myEvents;
+          })
+      .then(events => {
+          events.map(event => {
+              console.log("event :" + event.event_start_date , event.event_name);
+              let eve={
+                  name:event.event_name,
+                  date:event.event_start_date
+              };
+              console.log("eve name : "+eve.name + " eve date: " + eve.date);
+              let eves=this.state.events;
+              console.log("eve before push" + eves);
+              eves.push(eve);
+              console.log("eves : "+ eves);
+              this.setState({
+                events: eves
+              })
+              //this.state.events.push();
+          })
+      }) 
+    }
 
     renderHeader() {
         const dateFormat = "MMMM YYYY";
@@ -24,6 +59,8 @@ class Calendar extends React.Component {
                 <div className="col col-end" onClick={this.nextMonth}>
                     <div className="icon">chevron_right</div>
                 </div>
+
+                <button onClick={this.seeEvents}>click me!</button>
             </div>
         );
     }
@@ -75,6 +112,7 @@ class Calendar extends React.Component {
                     >
                         <span className="number">{formattedDate}</span>
                         <span className="bg">{formattedDate}</span>
+                        <span className="event-one">{this.findEvents(formattedDate)}</span>
                     </div>
                 );
                 day = dateFns.addDays(day, 1);
@@ -106,6 +144,25 @@ class Calendar extends React.Component {
             currentMonth: dateFns.subMonths(this.state.currentMonth, 1)
         });
     };
+    componentWillMount(){
+        this.renderEvents();
+        console.log("did mounth" + this.state.events);
+    }
+    seeEvents=()=>{
+        console.log("see events" + this.state.events);
+    }
+
+    findEvents=(day)=>{
+        let eventThisMonth = this.state.events.filter(event =>{
+            dateFns.getMonth(event.date === this.state.currentMonth)
+        });
+        console.log("event this month"+eventThisMonth);
+        eventThisMonth.map(event =>{
+            if (dateFns.format(event.date, 'D')=== day)
+            return event.name;
+        });
+        
+    }
 
     render() {
         return (
@@ -119,3 +176,9 @@ class Calendar extends React.Component {
 }
 
 export default Calendar;
+
+
+
+
+
+
