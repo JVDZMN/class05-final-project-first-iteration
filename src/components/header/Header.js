@@ -26,7 +26,7 @@ class Header extends Component {
             </li>
             <li>
               <a href="#link" alt="personal page">
-                <i class="fas fa-user" />
+                <i className="fas fa-user" />
               </a>
             </li>
           </ul>
